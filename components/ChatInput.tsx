@@ -5,10 +5,14 @@ import { FormEvent, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
+import { toast } from 'react-hot-toast';
 
 const ChatInput = ({ chatId }: { chatId: string }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const { data: session } = useSession();
+
+  // TODO: Add model selections
+  const model = 'text-davinci-003';
 
   const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,6 +44,23 @@ const ChatInput = ({ chatId }: { chatId: string }) => {
       ),
       message
     );
+
+    // Toast notification for loading
+    const notification = toast.loading('ChatGPT is thinking...');
+
+    await fetch('/api/askQuestion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: input,
+        chatId,
+        model,
+        session,
+      }),
+    }).then(() => {
+      // Toast notification to say successful
+      toast.success('ChatGPT got you!', { id: notification });
+    });
   };
 
   const handleInputChange = (
