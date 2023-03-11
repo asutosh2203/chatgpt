@@ -70,7 +70,7 @@ const ChatInput = ({ chatId }: { chatId: string }) => {
   };
 
   return (
-    <div className='bg-gray-700/50 text-white rounded-lg text-sm'>
+    <div className='bg-gray-700/50 text-white rounded-lg text-sm m-4'>
       <form className='px-5 py-2 space-x-5 flex' onSubmit={sendMessage}>
         <input
           className='bg-transparent focus:outline-none flex-1 disabled:cursor-not-allowed disabled:text-gray-300'

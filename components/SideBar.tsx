@@ -22,7 +22,9 @@ const SideBar = () => {
       <div className='flex-1'>
         <div className='space-y-2'>
           <NewChat />
-          <div>{/* ModelSelection */}</div>
+          <div className='hidden sm:inline'>
+            
+          </div>
 
           {/* Map through the ChatRows */}
           {chats?.docs.map((chat) => (

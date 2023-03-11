@@ -7,3 +7,12 @@ type Message = {
     avatar: string;
   };
 };
+
+type Option = {
+  value: string;
+  label: string;
+};
+
+type Data = {
+  modelOptions: Option[];
+};

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { RiChat1Line, RiDeleteBin6Line } from 'react-icons/ri';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { collection, deleteDoc, doc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const ChatRow = ({ id }: { id: string }) => {
@@ -16,7 +16,11 @@ const ChatRow = ({ id }: { id: string }) => {
   const [active, setActive] = useState(false);
 
   const [messages] = useCollection(
-    collection(db, 'users', session?.user?.email!, 'chats')
+    session &&
+      query(
+        collection(db, 'users', session?.user?.email!, 'chats', id, 'messages'),
+        orderBy('createdAt', 'asc')
+      )
   );
 
   useEffect(() => {
@@ -32,6 +36,8 @@ const ChatRow = ({ id }: { id: string }) => {
     router.replace('/');
   };
 
+  console.log(messages?.docs[messages?.docs.length - 1]);
+
   return (
     <Link
       href={`/chat/${id}`}
@@ -39,7 +45,8 @@ const ChatRow = ({ id }: { id: string }) => {
     >
       <RiChat1Line className='h-5 w-5' />
       <p className='flex-1 hidden md:inline-flex truncate'>
-        {messages?.docs[messages?.docs.length - 1]?.data().text || 'New Chat'}
+        {messages?.docs[messages?.docs.length - 1]?._document.data.value
+          .mapValue.fields.text.stringValue || 'New Chat'}
       </p>
       <RiDeleteBin6Line
         onClick={removeChat}
