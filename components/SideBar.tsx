@@ -1,28 +1,48 @@
 'use client';
 
+import { collection, orderBy, query } from 'firebase/firestore';
 import { useSession, signOut } from 'next-auth/react';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { db } from '../firebase';
+import ChatRow from './ChatRow';
 import NewChat from './NewChat';
 
 const SideBar = () => {
   const { data: session } = useSession();
+  const [chats, loading, error] = useCollection(
+    session &&
+      query(
+        collection(db, 'users', session.user?.email!, 'chats'),
+        orderBy('createdAt', 'desc')
+      )
+  );
+
   return (
     <div className='p-4 flex flex-col h-screen'>
       <div className='flex-1'>
-        <div>
+        <div className='space-y-2'>
           <NewChat />
           <div>{/* ModelSelection */}</div>
 
           {/* Map through the ChatRows */}
+          {chats?.docs.map((chat) => (
+            <ChatRow key={chat.id} id={chat.id} />
+          ))}
         </div>
       </div>
 
       {session && (
-        <img
+        <div
+          className='flex items-center space-x-5 cursor-pointer hover:bg-[#2B2C2F] rounded-lg px-4 py-2 transition-all duration-200 ease-out'
           onClick={() => signOut()}
-          src={session.user?.image!}
-          alt='prof-pic'
-          className='h-12 w-12 rounded-full cursor-pointer mx-auto mb-2 hover:opacity-50'
-        />
+        >
+          <img
+            src={session.user?.image!}
+            alt='prof-pic'
+            className='h-10 w-10 rounded-full'
+          />
+          <p className='text-white font-semibold text'>Log Out</p>
+        </div>
       )}
     </div>
   );
