@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { collection, orderBy, query } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -9,6 +10,8 @@ import Message from './Message';
 
 const Chat = ({ chatId }: { chatId: string }) => {
   const { data: session } = useSession();
+
+  // retreiving messages from firestore in ascending order of time
   const [messages] = useCollection(
     session &&
       query(
@@ -24,10 +27,19 @@ const Chat = ({ chatId }: { chatId: string }) => {
       )
   );
 
-  // console.log(messages?.docs[1]);
-
+  // useEffect to scroll down to the bottom of the page when new messages are added
+  useEffect(() => {
+    setTimeout(() => {
+      document.getElementById('messages')?.scrollTo({
+        top: document.getElementById('messages')?.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, [messages]);
+  
   return (
-    <div className='flex-1 overflow-y-auto overflow-x-hidden'>
+    <div className='flex-1 overflow-y-auto overflow-x-hidden' id='messages'>
       {messages?.empty && (
         <>
           <p className='mt-10 text-center text-white'>

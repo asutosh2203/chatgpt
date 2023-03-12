@@ -36,8 +36,6 @@ const ChatRow = ({ id }: { id: string }) => {
     router.replace('/');
   };
 
-  console.log(messages?.docs[messages?.docs.length - 1]);
-
   return (
     <Link
       href={`/chat/${id}`}

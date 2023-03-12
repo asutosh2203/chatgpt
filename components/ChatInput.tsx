@@ -6,13 +6,18 @@ import { useSession } from 'next-auth/react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { toast } from 'react-hot-toast';
+import ModelSelection from './ModelSelection';
+import useSWR from 'swr';
 
 const ChatInput = ({ chatId }: { chatId: string }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const { data: session } = useSession();
 
-  // TODO: Add model selections
-  const model = 'text-davinci-003';
+  // const { data: model } = useSWR('model', {
+  //   fallbackData: 'text-davinci-003',
+  // });
+
+const model = "gpt-3.5-turbo";
 
   const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,7 +94,9 @@ const ChatInput = ({ chatId }: { chatId: string }) => {
         </button>
       </form>
 
-      <div>{/* ModelSelection */}</div>
+      {/* <div className='md:hidden text-black'>
+        <ModelSelection />
+      </div> */}
     </div>
   );
 };
