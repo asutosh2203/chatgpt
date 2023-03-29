@@ -32,6 +32,7 @@ const SideBar = () => {
                 <p>Loading Chats...</p>
               </div>
             )}
+
             {/* Map through the ChatRows */}
             {chats?.docs.map((chat) => (
               <ChatRow key={chat.id} id={chat.id} />

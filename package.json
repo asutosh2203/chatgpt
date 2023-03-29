@@ -6,8 +6,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@firebase/app": "^0.9.5",
+    "child_process": "^1.0.2",
     "firebase": "^9.17.2",
     "firebase-admin": "^11.5.0",
+    "fs": "^0.0.1-security",
+    "net": "^1.0.2",
     "next": "latest",
     "next-auth": "^4.20.1",
     "openai": "^3.2.1",
@@ -18,7 +22,9 @@
     "react-icons": "^4.8.0",
     "react-select": "^5.7.0",
     "react-spinners": "^0.13.8",
-    "swr": "^2.1.0"
+    "swr": "^2.1.0",
+    "tls": "^0.0.1",
+    "typewriter-effect": "^2.19.0"
   },
   "devDependencies": {
     "@types/node": "18.11.3",

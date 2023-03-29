@@ -48,7 +48,9 @@ const ChatRow = ({ id }: { id: string }) => {
       </p>
       <RiDeleteBin6Line
         onClick={removeChat}
-        className='h-5 w-5 text-gray-700 hover:text-red-600'
+        className={`h-5 w-5 text-gray-300 hover:text-red-600 ${
+          !active && 'hidden'
+        }`}
       />
     </Link>
   );
