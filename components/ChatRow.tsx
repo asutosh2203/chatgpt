@@ -36,6 +36,10 @@ const ChatRow = ({ id }: { id: string }) => {
     router.replace('/');
   };
 
+  const responseMessageFields =
+    messages?.docs[messages?.docs.length - 1]?._document.data.value.mapValue
+      .fields;
+
   return (
     <Link
       href={`/chat/${id}`}
@@ -43,8 +47,10 @@ const ChatRow = ({ id }: { id: string }) => {
     >
       <RiChat1Line className='h-5 w-5' />
       <p className='flex-1 hidden md:inline-flex truncate'>
-        {messages?.docs[messages?.docs.length - 1]?._document.data.value
-          .mapValue.fields.text.stringValue || 'New Chat'}
+        {(responseMessageFields?.user.mapValue.fields._id.stringValue ===
+        'chat-gpt'
+          ? responseMessageFields?.text.arrayValue?.values[0].stringValue
+          : responseMessageFields?.text.stringValue) || `New Chat`}
       </p>
       <RiDeleteBin6Line
         onClick={removeChat}
