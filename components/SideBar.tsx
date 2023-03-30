@@ -34,7 +34,7 @@ const SideBar = () => {
             )}
 
             {/* Map through the ChatRows */}
-            {chats?.docs.map((chat) => (
+            {chats?.docs.length == 0? <p>No Chats Found.</p>: chats?.docs.map((chat) => (
               <ChatRow key={chat.id} id={chat.id} />
             ))}
           </div>
