@@ -23,9 +23,10 @@ export default async function handler(
 
   //ChatGPT query
   const response = await query(prompt, chatId, model);
+  const responseArray = response?.split('\n');
 
-  const message: Message = {
-    text: response || 'ChatGPT was unable to find the answer.',
+  const message: ResponseMessage = {
+    text: responseArray || ['ChatGPT was unable to find the answer.'],
     createdAt: admin.firestore.Timestamp.now(),
     user: {
       _id: 'chat-gpt',
@@ -42,5 +43,5 @@ export default async function handler(
     .collection('messages')
     .add(message);
 
-  res.status(200).json({ answer: message.text });
+  res.status(200).json({ answer: message.text[0] });
 }
