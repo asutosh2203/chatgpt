@@ -1,7 +1,7 @@
 'use client';
 
 import { FaRegPaperPlane, FaMicrophone } from 'react-icons/fa';
-import { FormEvent, useState } from 'react';
+import { useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -12,24 +12,29 @@ import useSWR from 'swr';
 const ChatInput = ({ chatId }: { chatId: string }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
+  const inputRef = useRef(
+    document.getElementById('input_text') as HTMLInputElement
+  );
   const { data: session } = useSession();
 
   // handles speech to text using the web speech API
   const isSpeechRecognitionSupported = 'webkitSpeechRecognition' in window;
   const recognition = new (window as any).webkitSpeechRecognition();
   const handleSpeechRecognition = () => {
-    console.log('recognition object:', recognition);
     recognition.stop();
     recognition.interimResults = true;
     recognition.profanityFilter = false;
     recognition.lang = 'en-US';
     recognition.onstart = () => setIsListening(true);
-    recognition.onend = () => setIsListening(false);
+    recognition.onend = () => {
+      setIsListening(false);
+    };
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
       setInputValue(transcript);
     };
     recognition.start();
+    inputRef.current!.focus();
   };
 
   // const { data: model } = useSWR('model', {
@@ -39,12 +44,12 @@ const ChatInput = ({ chatId }: { chatId: string }) => {
   const model = 'gpt-3.5-turbo';
   // const model = 'text-davinci-003';
 
-  const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const sendMessage = async () => {
     if (!inputValue) return;
 
     const input = inputValue.trim();
     setInputValue('');
+    if (!input) return;
 
     const message: Message = {
       text: input,
@@ -95,18 +100,25 @@ const ChatInput = ({ chatId }: { chatId: string }) => {
   };
 
   return (
-    <div className='bg-gray-700/50 text-white rounded-lg text-sm m-4'>
-      <form
-        className='px-5 py-2 space-x-3 flex items-center'
-        onSubmit={sendMessage}
-      >
+    <div
+      className='bg-gray-700/50 text-white rounded-lg text-sm m-4'
+      id='chat_input'
+    >
+      <div className='px-5 py-2 space-x-3 flex items-center'>
         <input
           className='bg-transparent focus:outline-none flex-1 disabled:cursor-not-allowed disabled:text-gray-300'
+          id='input_text'
           disabled={!session}
           type='text'
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Let's get chummy!"
+          onKeyDown={(e) => {
+            if (e.key == 'Enter') {
+              sendMessage();
+            }
+          }}
+          ref={inputRef}
         />
         {isSpeechRecognitionSupported && (
           <button
@@ -124,11 +136,11 @@ const ChatInput = ({ chatId }: { chatId: string }) => {
         <button
           disabled={!inputValue || !session}
           className='hover:bg-gray-800 p-3 rounded-full transition-all duration-200 disabled:hover:bg-transparent disabled:cursor-not-allowed'
-          type='submit'
+          onClick={() => sendMessage()}
         >
           <FaRegPaperPlane className='h-4 w-4' />
         </button>
-      </form>
+      </div>
 
       {/* <div className='md:hidden text-black'>
         <ModelSelection />
