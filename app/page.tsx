@@ -1,7 +1,6 @@
 'use client';
 
-import { FiSun } from 'react-icons/Fi';
-import { BsLightningCharge, BsArrowRightShort } from 'react-icons/bs';
+import { BsLightningCharge, BsArrowRightShort, BsSun } from 'react-icons/bs';
 import { RxExclamationTriangle } from 'react-icons/rx';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -16,7 +15,7 @@ const HomePage = () => {
       <div className='flex space-x-4 text-center'>
         <div>
           <div className='flex flex-col items-center justify-center mb-5'>
-            <FiSun className='h-6 w-6 m-2' />
+            <BsSun className='h-6 w-6 m-2' />
             <h2>Examples</h2>
           </div>
           <div className='space-y-4'>

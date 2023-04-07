@@ -1,10 +1,8 @@
 'use client';
 
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { FiPlus } from 'react-icons/Fi';
-import { db } from '../firebase';
+import { BsPlus } from 'react-icons/bs';
 import { createNewChat } from '../utils/commonFunctions';
 
 const NewChat = () => {
@@ -16,7 +14,7 @@ const NewChat = () => {
       onClick={() => createNewChat(session, router)}
       className='border border-gray-700 chatRow'
     >
-      <FiPlus />
+      <BsPlus />
       <p>New Chat</p>
     </div>
   );

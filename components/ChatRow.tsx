@@ -36,9 +36,9 @@ const ChatRow = ({ id }: { id: string }) => {
     router.replace('/');
   };
 
-  const responseMessageFields =
-    messages?.docs[messages?.docs.length - 1]?._document.data.value.mapValue
-      .fields;
+  const responseMessageFields = (
+    messages?.docs[messages?.docs.length - 1] as any
+  )?._document.data.value.mapValue.fields;
 
   return (
     <Link
