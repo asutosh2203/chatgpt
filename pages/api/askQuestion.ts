@@ -43,7 +43,5 @@ export default async function handler(
     .collection('messages')
     .add(message);
 
-  console.log(res.statusCode, '-', res.statusMessage);
-
   res.status(200).json({ answer: message.text[0] });
 }
