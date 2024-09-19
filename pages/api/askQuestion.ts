@@ -5,7 +5,6 @@ import { geminiQuery /*chatgptQuery*/ } from "../../utils/queryApi";
 import { adminDb } from "../../firebaseAdmin";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase";
-import util from "util";
 import { getMessageFromChat } from "../../utils/commonFunctions";
 
 type Data = {
@@ -16,7 +15,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { prompt, chatId, model, session } = req.body;
+  const { prompt, chatId, model, session, systemInstructions } = req.body;
   if (!prompt) {
     res.status(400).json({ answer: "Please provide a prompt!" });
   }
@@ -76,7 +75,7 @@ export default async function handler(
   }
 
   // Gemini query
-  const geminiResponse = await geminiQuery(prompt, chatId, history);
+  const geminiResponse = await geminiQuery(prompt, chatId, history, systemInstructions);
   let geminiResponseArray = geminiResponse?.split("\n");
   // geminiResponseArray = geminiResponseArray.filter(responses => responses != '')
 
