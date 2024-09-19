@@ -2,9 +2,9 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['bit.ly'],
+    domains: ['bit.ly', 'images.pexels.com'],
   },
-  experimental: {
-    appDir: true,
-  },
+  // experimental: {
+  //   appDir: true,
+  // },
 };
