@@ -39,7 +39,7 @@ const Chat = ({ chatId }: { chatId: string }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto overflow-x-hidden relative top-[60px] w-full" id="messages">
+    <div className="flex-1 overflow-y-auto overflow-x-hidden" id="messages">
       {messages?.empty && (
         <>
           <p className="mt-10 text-center text-white">

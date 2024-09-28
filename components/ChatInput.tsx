@@ -11,11 +11,9 @@ import { toastArray } from "../utils/commonFunctions";
 const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [isListening, setIsListening] = useState<boolean>(false);
-  const [systemInstructions, setSystemInstructions] = useState<string>("");
   const inputRef = useRef(
     document.getElementById("input_text") as HTMLInputElement
   );
-
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -101,7 +99,6 @@ const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
         chatId,
         model,
         session,
-        systemInstructions
       }),
     }).then((res) => {
       // Toast notification to say successful
@@ -121,33 +118,10 @@ const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
 
   return (
     <div
-      className="bg-gray-700/50 text-white text-sm rounded-full m-4 z-10 overflow-hidden"
+      className="bg-gray-700/50 text-white rounded-lg text-sm m-4"
       id="chat_input"
     >
-      {/* <div className="bg-[#202123] px-5 py-2 space-x-3 flex items-center absolute top-0 -ml-4">
-        <p>System instructions</p>
-        <input
-          type="text"
-          className="focus:outline-none flex-1 disabled:cursor-not-allowed disabled:text-gray-300"
-          placeholder="System instructions"
-        />
-      </div> */}
-
-      <div className="bg-[#202123] px-5 py-2 space-y-3 flex flex-col items-start fixed top-0 -ml-4 w-full ">
-        <p>System instructions</p>
-        <input
-          className="bg-transparent focus:outline-none flex-1 disabled:cursor-not-allowed disabled:text-gray-300 h-12 w-full"
-          disabled={!session}
-          type="text"
-          placeholder="Optional tone and style instructions"
-          value={systemInstructions}
-          onChange={(e) => {
-            setSystemInstructions(e.target.value);
-          }}
-        />
-      </div>
-
-      <div className="bg-[#3d4453] px-5 py-2 space-x-3 flex items-center">
+      <div className="px-5 py-2 space-x-3 flex items-center">
         <input
           className="bg-transparent focus:outline-none flex-1 disabled:cursor-not-allowed disabled:text-gray-300"
           id="input_text"
