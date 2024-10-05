@@ -9,7 +9,7 @@ type Message = {
 };
 
 type ResponseMessage = {
-  text: string[];
+  text: string;
   createdAt: admin.firestore.Timestamp;
   user: {
     _id: string;

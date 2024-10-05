@@ -72,13 +72,13 @@ import {
 //   return res;
 // };
 
-
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey!);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
-  // systemInstruction: "Be witty and knowledgeable with your responses.",
+  systemInstruction:
+    "Answer like a gen-z and keep your responses informal and friendly.",
 });
 
 const generationConfig = {
@@ -89,27 +89,41 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-export async function geminiQuery(prompt: string, chatId: string, history: Array<Content> = []) {
+const safetySettings = [
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+];
+
+export async function geminiQuery(
+  prompt: string,
+  chatId: string,
+  history: Array<Content> = []
+) {
   const chatSession = model.startChat({
-    generationConfig, safetySettings: [
-      {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_NONE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_NONE,
-      },
-    ], history
+    generationConfig,
+    safetySettings,
+    history,
   });
 
   try {
-
     const result = await chatSession.sendMessage(prompt);
     return result.response.text();
   } catch (err: any) {
-    console.log(err)
-    return `Sorry, Gemini cannot assist you now. Error Code: ${err.status}, Error: ${err.statusText}.`
+    console.log(err);
+    return `Sorry, Gemini cannot assist you now. Error Code: ${err.status}, Error: ${err.statusText}.`;
   }
 }
-

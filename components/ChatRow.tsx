@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { RiChat1Line, RiDeleteBin6Line } from "react-icons/ri";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { collection, deleteDoc, doc, orderBy, query } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 
 const ChatRow = ({ id }: { id: string }) => {
@@ -22,14 +22,16 @@ const ChatRow = ({ id }: { id: string }) => {
         orderBy("createdAt", "asc")
       )
   );
-
+  const responseMessageFields = (
+    messages?.docs[messages?.docs.length - 1] as any
+  )?._document.data.value.mapValue.fields;
   useEffect(() => {
     // checks if pathname is there, else return
     if (!pathname) return;
 
     // sets active state of the chat depending on the current chat
     setActive(pathname.includes(id));
-  }, [pathname]);
+  }, [pathname, responseMessageFields]);
 
   const removeChat = async () => {
     try {
@@ -40,9 +42,9 @@ const ChatRow = ({ id }: { id: string }) => {
     router.replace("/");
   };
 
-  const responseMessageFields = (
-    messages?.docs[messages?.docs.length - 1] as any
-  )?._document.data.value.mapValue.fields;
+
+
+console.log(responseMessageFields?.text.stringValue)
 
   return (
     <Link

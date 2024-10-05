@@ -24,6 +24,8 @@
     "react-markdown": "^9.0.1",
     "react-select": "^5.7.0",
     "react-spinners": "^0.13.8",
+    "remark-gfm": "^4.0.0",
+    "showdown": "^2.1.0",
     "swr": "^2.1.0",
     "tls": "^0.0.1",
     "typewriter-effect": "^2.19.0"

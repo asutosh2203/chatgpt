@@ -29,19 +29,6 @@ export default async function handler(
   // const response = await chatgptQuery(prompt, chatId, model);
   // const responseArray = response?.split('\n');
 
-  const messagesCollectionRef = collection(
-    db,
-    "users",
-    session?.user?.email!,
-    "chats",
-    chatId,
-    "messages"
-  );
-  const messagesCollection = query(
-    messagesCollectionRef,
-    orderBy("createdAt", "asc")
-  );
-
   let prevMessages = await getMessageFromChat(
     chatId,
     session?.user?.email!,
@@ -77,16 +64,16 @@ export default async function handler(
 
   // Gemini query
   const geminiResponse = await geminiQuery(prompt, chatId, history);
-  let geminiResponseArray = geminiResponse?.split("\n");
+  let geminiResponseArray = geminiResponse[0]?.split("\n");
   // geminiResponseArray = geminiResponseArray.filter(responses => responses != '')
 
   const message: ResponseMessage = {
-    text: geminiResponseArray || ["Gemini was unable to find the answer."],
+    text: geminiResponse || "Gemini was unable to find the answer.",
     createdAt: admin.firestore.Timestamp.now(),
     user: {
       _id: "g-gem",
       name: "Google Gemini",
-      avatar: "https://images.pexels.com/photos/13194386/pexels-photo-13194386.png",
+      avatar: "https://i.imgur.com/V0CZWvw.jpeg",
     },
   };
 
@@ -98,7 +85,7 @@ export default async function handler(
     .collection("messages")
     .add(message);
 
-  const response = { answer: message.text[0], history: history };
+  const response = { answer: message.text[0], history: history, err: geminiResponse[1] };
 
   res.status(200).json(response);
 }

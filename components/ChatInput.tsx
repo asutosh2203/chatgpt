@@ -78,9 +78,7 @@ const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
       message
     );
 
-    console.log("Logging imported toastArray: ", toastArray);
     const loadingIndex = Math.floor(Math.random() * toastArray.length - 1);
-    console.log("Logging calculated loadingIndex", loadingIndex);
 
     let notification = "";
 
@@ -107,6 +105,8 @@ const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
       } else {
         toast.success("WHOOOOSH!!!", { id: notification });
       }
+
+      console.log(res.json().then((res) => console.log(res)));
     });
   };
 
@@ -118,7 +118,7 @@ const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
 
   return (
     <div
-      className="bg-gray-700/50 text-white rounded-lg text-sm m-4"
+      className="bg-gray-700/50 text-white rounded-full text-sm m-4"
       id="chat_input"
     >
       <div className="px-5 py-2 space-x-3 flex items-center">
