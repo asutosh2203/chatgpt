@@ -106,7 +106,6 @@ const ChatInput = ({ chatId, query }: { chatId: string; query?: string }) => {
         toast.success("WHOOOOSH!!!", { id: notification });
       }
 
-      console.log(res.json().then((res) => console.log(res)));
     });
   };
 

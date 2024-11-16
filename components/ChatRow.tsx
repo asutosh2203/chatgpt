@@ -1,13 +1,20 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { RiChat1Line, RiDeleteBin6Line } from "react-icons/ri";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { collection, deleteDoc, doc, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase";
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { RiChat1Line, RiDeleteBin6Line } from 'react-icons/ri';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+} from 'firebase/firestore';
+import { db } from '../firebase';
 
 const ChatRow = ({ id }: { id: string }) => {
   const pathname = usePathname();
@@ -18,8 +25,8 @@ const ChatRow = ({ id }: { id: string }) => {
   const [messages] = useCollection(
     session &&
       query(
-        collection(db, "users", session?.user?.email!, "chats", id, "messages"),
-        orderBy("createdAt", "asc")
+        collection(db, 'users', session?.user?.email!, 'chats', id, 'messages'),
+        orderBy('createdAt', 'asc')
       )
   );
   const responseMessageFields = (
@@ -35,37 +42,42 @@ const ChatRow = ({ id }: { id: string }) => {
 
   const removeChat = async () => {
     try {
-      await deleteDoc(doc(db, "users", session?.user?.email!, "chats", id));
+      await deleteDoc(doc(db, 'users', session?.user?.email!, 'chats', id));
     } catch (error) {
       console.log(error);
     }
-    router.replace("/");
+    router.replace('/');
   };
 
+  const formatChatTitle = () => {
+    var chatTitle = '';
+    if (responseMessageFields?.text.stringValue.length > 30) {
+      chatTitle =
+        responseMessageFields?.text.stringValue.slice(0, 28).trim() + '...';
+    } else {
+      chatTitle = responseMessageFields?.text.stringValue;
+    }
 
+    if (!chatTitle) {
+      chatTitle = 'New Chat';
+    }
 
-console.log(responseMessageFields?.text.stringValue)
+    return chatTitle;
+  };
 
   return (
     <Link
       href={`/chat/${id}`}
-      className={`chatRow justify-center ${active && "bg-gray-700/50"}`}
+      className={`chatRow justify-center ${active && 'bg-gray-700/50'}`}
     >
-      <RiChat1Line className="h-5 w-5" />
-      <p className="flex-1 hidden md:inline-flex truncate">
-        {(responseMessageFields?.user.mapValue.fields._id.stringValue ===
-        "g-gem"
-          ? responseMessageFields?.text.arrayValue?.values[0].stringValue.slice(
-              0,
-              31
-            ) + "..."
-          : responseMessageFields?.text.stringValue.slice(0, 31)) ||
-          `New Chat`}
+      <RiChat1Line className='h-5 w-5' />
+      <p className='flex-1 hidden md:inline-flex truncate'>
+        {formatChatTitle()}
       </p>
       <RiDeleteBin6Line
         onClick={removeChat}
         className={`h-5 w-5 text-gray-300 hover:text-red-600 ${
-          !active && "hidden"
+          !active && 'hidden'
         }`}
       />
     </Link>

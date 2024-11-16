@@ -17,7 +17,7 @@ const Message = ({ message }: { message: DocumentData }) => {
   return (
     <div className={`py-5 text-white`}>
       <div
-        className={`flex space-x-5 px-10 max-w-3xl mx-auto ${
+        className={`flex space-x-5  max-w-3xl mx-auto ${
           !isBot && "flex-row-reverse"
         }`}
       >
@@ -45,7 +45,7 @@ const Message = ({ message }: { message: DocumentData }) => {
                 // <img src={responseMessage.stringValue} />
               ))} */}
                <div
-                  className="pt-1 bg-[#151617] px-5 py-2 rounded-3xl max-w-[90%] mb-1 overflow-x-scroll"
+                  className="bg-[#151617] p-5 rounded-3xl max-w-[90%] mb-1 "
                   id="bot-response"
                 >
                   <Markdown  remarkPlugins={[remarkGfm]} className={""}>

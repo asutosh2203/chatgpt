@@ -78,7 +78,7 @@ const genAI = new GoogleGenerativeAI(apiKey!);
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
   systemInstruction:
-    "Answer like a gen-z and keep your responses informal and friendly.",
+    "Keep your responses informal and friendly.",
 });
 
 const generationConfig = {
