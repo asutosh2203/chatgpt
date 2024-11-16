@@ -4,7 +4,7 @@ import {
   HarmCategory,
   HarmBlockThreshold,
   Content,
-} from "@google/generative-ai";
+} from '@google/generative-ai';
 
 // export const chatgptQuery = async (prompt: string, chatId: string, model: string) => {
 //   const res = await openai
@@ -76,9 +76,8 @@ const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey!);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-  systemInstruction:
-    "Keep your responses informal and friendly.",
+  model: 'gemini-1.5-flash',
+  systemInstruction: 'Answer like a friendly gen-z.',
 });
 
 const generationConfig = {
@@ -86,7 +85,7 @@ const generationConfig = {
   topP: 0.95,
   topK: 64,
   maxOutputTokens: 2048,
-  responseMimeType: "text/plain",
+  responseMimeType: 'text/plain',
 };
 
 const safetySettings = [

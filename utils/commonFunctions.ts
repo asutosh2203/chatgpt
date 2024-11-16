@@ -7,12 +7,11 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { Session } from "next-auth";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { db } from "../firebase";
 
 const createNewChat = async (
   session: Session | null,
-  router: AppRouterInstance,
+  router: any,
   query: string = "", // used only from the home page
   setLoading?: any
 ) => {

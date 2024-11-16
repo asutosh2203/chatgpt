@@ -64,7 +64,7 @@ export default async function handler(
 
   // Gemini query
   const geminiResponse = await geminiQuery(prompt, chatId, history);
-  let geminiResponseArray = geminiResponse[0]?.split("\n");
+  // let geminiResponseArray = geminiResponse[0]?.split("\n");
   // geminiResponseArray = geminiResponseArray.filter(responses => responses != '')
 
   const message: ResponseMessage = {
